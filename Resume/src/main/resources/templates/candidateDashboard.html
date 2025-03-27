@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Dashboard | Resume Selector</title>
+    <style>
+        *{
+            margin: 0;
+            padding : 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            font-family: monospace;
+            font-weight: 600;
+            background-color:rgb(255, 255, 255);
+        }
+        header{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: center;
+            height: 120px;
+            width: 100vw;
+            padding: 20px 40px;
+            background-color: #18281d;
+            font-size: 1.5rem;
+        }
+        h1{
+            color:white;
+        }
+        a{
+            height: 50px;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            border: 1px solid red;
+            background-color: whitesmoke;
+        }
+        a:hover{
+            background-color: black;
+            color:white;
+        }
+        main{
+            color:black;
+            padding: 20px;
+        }
+        #title{
+            color:black;
+            padding: 10px;
+        }
+        #jobs{
+            background-color: grey;
+            padding: 20px;
+        }
+        h2{
+           text-align: center; 
+           font-size: 2rem;
+        }
+        hr{
+            border: 5px solid black;
+            width: 80%;
+            margin: 20px auto 40px auto;
+        }
+        .job{
+            margin: 10px;
+            background-color:white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="heading">Resume-Selector</h1>
+        <a href="/">Log-out</a>
+    </header>
+    <main>
+        <h1 id="title">Welcome  <span th:text="${candidate.candidateName}"></span></h1>
+        <div id="jobs">
+            <h2>Job-Openings</h2><hr>
+
+            <div class="job" th:id="${job.jobId}" th:each="job : ${jobOpenings}" th:attr="data-username=${candidate.username}, data-jobId=${job.jobId}" onclick="redirectToJob(this)">
+                <h3>
+                    <span th:text="${job.position}"></span><span> | </span><span th:text="${job.companyName}"></span>
+                </h3>
+                <p th:text="${job.description}"></p>
+                <p>No. of Openings: <span th:text="${job.numberOfOpenPositions}"></span></p>
+                <!-- <p><strong>Required Skills:</strong></p>
+                <ul>
+                    <li th:each="skill : ${job.requiredSkills}" th:text="${skill}"></li>
+                </ul> -->
+            </div>
+        </div>
+    </main>
+    <script>
+        function redirectToJob(element) {
+            var username = element.getAttribute('data-username');
+            var jobId = element.getAttribute('data-jobId');
+            var url = "/candidate/job/" + username + "/" + jobId;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

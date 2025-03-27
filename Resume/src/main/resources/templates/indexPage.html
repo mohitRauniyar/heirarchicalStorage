@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeSelector-Welcome to our website</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:monospace;
+        }
+        body{
+            height: 100vh;
+            width: 100vw;
+            background-color: #18281d;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            font-size: 2.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        #heading{
+            color: white;
+        }
+        #buttonContainer{
+            display: flex;
+            justify-content: space-evenly;
+        }
+        a{
+            text-decoration: none;
+            width: 500px;
+            color: black;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgb(255, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <div id="heading">
+        <h1>Welcome to Resume-Selector</h1>
+    </div>
+    <div id="buttonContainer">
+        <a href="/login">Login into your account</a>
+        <a href="/register">Register a new user</a>
+    </div>
+
+    
+</body>
+</html>

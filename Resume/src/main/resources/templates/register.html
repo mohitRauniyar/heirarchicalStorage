@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Login | Resume-Selector</title>
+    <style>
+        *{
+            margin: 0;
+            padding : 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            font-family: monospace;
+            font-weight: 600;
+            background-color:rgb(156, 154, 154);
+        }
+        header{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: center;
+            height: 120px;
+            width: 100vw;
+            padding: 20px 40px;
+            background-color: #18281d;
+            font-size: 1.5rem;
+        }
+        h1{
+            color:white;
+        }
+        a{
+            height: 50px;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            border: 1px solid red;
+            background-color: whitesmoke;
+        }
+        a:hover{
+            background-color: black;
+            color:white;
+        }
+        #formContainer{
+            font-size: 1.5rem;
+            color: black;
+            width: 60vw;
+            margin: 50px auto;
+            background-color:white;
+            padding: 20px;
+        }
+        #formTitle, #formTitle1, #formTitle2{
+            width: 100%;
+            text-align: center;
+            color: black;
+            margin: 30px;
+        }
+        
+        hr{
+            border: 5px solid black;
+            width: 80%;
+            margin: 20px auto 40px auto;
+        }
+        label{
+            display: block;
+            margin: 30px auto 20px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        input{
+            padding: 10px;
+            font-size: 1.1rem;
+            width: 60%;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        button{
+            width: 50%;
+            display: block;
+            padding: 10px;
+            font-size: 1.5rem;
+            color: whitesmoke;
+            background-color: #18281d;
+            margin: 40px auto 0px auto;
+            border: 3px solid black;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: black;
+            
+        }
+        #choice{
+            display:flex;
+            justify-content: space-evenly;
+        }
+        #candidate, #company{
+            width: 40%;
+            margin: 20px;
+        }
+        #skill-grid{
+            font-size:1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows:auto;
+        }
+        .label, .input{
+            display: inline;
+            margin: 5px;
+            width: fit-content;
+            padding:10px;
+            text-wrap:wrap;
+        }
+        #companyRegister, #candidateRegister{
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="heading">Resume-Selector</h1>
+        <a href="/">Go Back</a>
+    </header>
+    <main>
+        <div id="formContainer">
+            <div id="form">
+                <h1 id="formTitle">Register a New Account</h1>
+                <hr>
+                <div id="choice">
+                    <button id="company">Company</button>
+                    <button id="candidate">Candidate</button>
+                </div>
+                <div id="companyRegister">
+                    <form th:action="@{/register/company}" th:object="${company}" method="post">
+                        <h1 id="formTitle1">Register a Company</h1>
+                        <hr>
+                        <label for="companyName">Company Name: <input type="text" th:field="*{companyName}" name="companyName" id="companyName" placeholder="Enter your Company Name here"></label>
+                        <label for="username">UserName: <input th:field="*{username}" type="text" name="username" id="username" placeholder="Enter your username here"></label>
+                        <label for="password">Password: <input type="text" th:field="*{password}" name="password" id="password" placeholder="Enter your password here"></label>
+                        <label for="companyLocation">Company Location: <input th:field="*{location}" type="text" name="companyLocation" id="companyLocation" placeholder="Enter your company Location here"></label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div id="candidateRegister">
+                    <form th:action="@{/register/candidate}" th:object="${candidate}" method="post">
+                        <h1 id="formTitle1">Register a Candidate</h1>
+                        <hr>
+                        <label for="candidateName">Full Name: <input th:field="*{candidateName}" type="text" name="candidateName" id="candidateName" placeholder="Enter your Full Name here"></label>
+                        <label for="username">UserName: <input th:field="*{username}" type="text" name="username" id="username" placeholder="Enter your username here"></label>
+                        <label for="password">Password: <input th:field="*{password}" type="text" name="password" id="password" placeholder="Enter your password here"></label>
+                        <fieldset>
+                            <legend>Select the Skills you possess</legend>
+                            <div id="skill-grid">
+                                <label th:each="skill : ${skillList}" for="${skill}" class="label">
+                                    <input type="checkbox" th:field="*{skills}" th:value="${skill}" class="input" name="skill"> <span th:text="${skill}"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <label for="experience">Experience:<input th:field="*{experience}" type="number" id="experience" name="experience" placeholder="Enter experience (in Years)" min="0" max="90"></label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let skillList = ["C++", "Java", "Web Development", "App Development", "React", "MongoDb", "Data-Structures"]
+        let list=""
+        for(let i = 0; i<skillList.length; i++){
+            let child = `<label for="${skillList[i]} class='label'"><input type="checkbox" class='input' id="${skillList[i]}" name="skills" value="${skillList[i]}">${skillList[i]}</label>`
+            list = list+child
+        }
+        document.getElementById('skill-grid').innerHTML = list 
+        document.getElementById('company').addEventListener('click', ()=>{
+            document.getElementById('candidateRegister').style.display = 'none'
+            document.getElementById('companyRegister').style.display = 'block'
+        })
+        document.querySelector('#candidate').addEventListener('click', ()=>{
+            console.log("hi")
+            document.getElementById('candidateRegister').style.display = 'block'
+            document.getElementById('companyRegister').style.display = 'none'
+        })
+    </script>
+</body>
+</html>

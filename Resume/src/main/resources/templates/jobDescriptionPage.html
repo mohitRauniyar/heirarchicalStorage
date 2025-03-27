@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Decription | Resume Selector</title>
+    <style>
+        *{
+            margin: 0;
+            padding : 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            font-family: monospace;
+            font-weight: 600;
+            background-color:rgb(182, 182, 182);
+        }
+        header{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: center;
+            height: 120px;
+            width: 100vw;
+            padding: 20px 40px;
+            background-color: #18281d;
+            font-size: 1.5rem;
+        }
+        h1{
+            color:white;
+        }
+        a, button{
+            height: 50px;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            border: 1px solid red;
+            background-color: whitesmoke;
+        }
+        a:hover, button:hover{
+            background-color: black;
+            color:white;
+        }
+        main{
+            padding: 30px;
+        }
+        #jobs{
+            background-color: white;
+            padding: 20px;
+        }
+        h2{
+            font-size: 2rem;
+            margin: 10px;
+        }
+        h3{
+            font-size: 1.5rem;
+            padding: 5px;
+        }
+        button{
+            margin: 20px;
+            width: 300px;
+            border: 2px solid black;
+            background-color:green;
+            font-size:1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="heading">Resume-Selector</h1>
+        <a th:attr="data-username=${candidate.username}" href="">Go Back</a>
+    </header>
+    <main>
+        <div id="jobs">
+            <h2 th:text="${job.position}"></h2>
+            <h3 th:text="'Company: ' + ${job.companyName}"></h3>
+            <h3 th:text="'Salary: ' + ${job.salary}"></h3>
+            <h3 th:text="'Experience Required: ' + ${job.experienceRequiredInYears}"></h3>
+            <h3 th:text="'Qualification Required: ' + ${job.qualificationRequired}"></h3>
+            <h3 th:text="'Number of Open positions: ' + ${job.numberOfOpenPositions}"></h3>
+            <h3 th:text="'Job Description: ' + ${job.description}"></h3>
+            <button id="apply" th:attr="data-jobId=${job.jobId}" >Apply for this Job</button>
+        </div>
+        
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var goBackLink = document.querySelector("a[data-username]");
+            var username = goBackLink.getAttribute("data-username");
+            var href = "/candidate/dashboard/" + username;
+            goBackLink.setAttribute("href", href);
+        });
+
+    document.getElementById('apply').addEventListener('click', ()=>{
+        var goBackLink = document.querySelector("a[data-username]");
+        var username = goBackLink.getAttribute("data-username");
+        var jobId = document.querySelector('button[data-jobId]').getAttribute("data-jobId")
+        window.location.href = "/apply/" + username+"/"+jobId;
+    })
+    </script>
+</body>
+
+</html>

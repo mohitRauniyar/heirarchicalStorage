@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard | Resume Selector</title>
+    <style>
+        *{
+            margin: 0;
+            padding : 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            font-family: monospace;
+            font-weight: 600;
+            background-color:rgb(255, 255, 255);
+        }
+        header{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: center;
+            height: 120px;
+            width: 100vw;
+            padding: 20px 40px;
+            background-color: #18281d;
+            font-size: 1.5rem;
+        }
+        h1{
+            color:white;
+        }
+        a{
+            height: 50px;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            border: 1px solid red;
+            background-color: whitesmoke;
+        }
+        a:hover{
+            background-color: black;
+            color:white;
+        }
+        #formContainer{
+            font-size: 1.5rem;
+            color: black;
+            width: 80vw;
+            margin: 50px auto;
+            background-color:white;
+            padding: 20px;
+        }
+        #formTitle, #formTitle1, #formTitle2{
+            width: 100%;
+            text-align: center;
+            color: black;
+            margin: 30px;
+        }
+        
+        hr{
+            border: 5px solid black;
+            width: 80%;
+            margin: 20px auto 40px auto;
+        }
+        label{
+            display: block;
+            margin: 30px auto 20px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        input{
+            padding: 10px;
+            font-size: 1.1rem;
+            width: 60%;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        button{
+            width: 50%;
+            display: block;
+            padding: 10px;
+            font-size: 1.5rem;
+            color: whitesmoke;
+            background-color: #18281d;
+            margin: 40px auto 0px auto;
+            border: 3px solid black;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: black;
+            
+        }
+        #choice{
+            display:flex;
+            justify-content: space-evenly;
+        }
+        #create, #view{
+            width: 40%;
+            margin: 20px;
+        }
+        #createJob{
+            display:none;
+        }
+        .skill-grid{
+            font-size:1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows:auto;
+        }
+        .label, .input{
+            display: inline;
+            margin: 5px;
+            width: fit-content;
+            padding:10px;
+            text-wrap:wrap;
+        }
+        fieldset{margin: 30px 0px;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="heading">Resume-Selector</h1>
+        <a href="/">Log-out</a>
+    </header>
+    <main>
+        <div id="formContainer">
+            <div id="form">
+                <h1 id="formTitle">Welcome <span th:text="${company.companyName}"></span></h1>
+                <hr>
+                <div id="choice">
+                    <button id="create">Create a Job Opening</button>
+                    <a th:attr="data-username=${company.username}" href="" id="view">View Job Applicants</a>
+                </div>
+                <div id="createJob">
+                    <form th:action="@{'/company/jobs/' + ${company.username}}" th:object="${jobOpenings}" method="post">
+                        <h1 id="formTitle1">Create a Job Opening</h1>
+                        <hr>
+                        <label for="position">Position: <input type="text" th:field="*{position}" name="position" id="position" placeholder="Enter the position of the job here"></label>
+                        <label for="jobId">Job-Id: <input th:field="*{jobId}" type="text" name="jobId" id="jobId" placeholder="Enter the Id for job here"></label>
+                        <label for="salary">Salary: <input type="text" th:field="*{salary}" name="salary" id="salary" placeholder="Enter the salary for job here"></label>
+                        <label for="experienceRequiredInYears">Experience Required (in years): <input th:field="*{experienceRequiredInYears}" type="number" name="experienceRequiredInYears" id="experienceRequiredInYears" placeholder="Enter your required experience here" min="0" max="90"></label>
+                        <label for="qualificationRequired">Qualification Required: <input th:field="*{qualificationRequired}" type="text" name="qualificationRequired" id="qualificationRequired" placeholder="Enter the qualification requirement of job here"></label>
+                        <label for="numberOfOpenPositions">Number of Open Positions: <input th:field="*{numberOfOpenPositions}" type="number" name="numberOfOpenPositions" id="numberOfOpenPositions" placeholder="Enter your required experience here" min="0"></label>
+                        <label for="description">Description of the Job: <textarea th:field="*{description}" type="number" name="description" id="description" placeholder="Enter the discription of job here" cols="85" rows="10"></textarea></label>
+                        <fieldset>
+                            <legend>Select the Primary Skills for the job</legend>
+                            <div class="skill-grid">
+                                <label th:each="skill : ${skillList}" for="${skill}" class="label">
+                                    <input type="checkbox" th:field="*{primarySkills}" th:value="${skill}" class="input" name="primarySkills"> <span th:text="${skill}"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Select the High Priority Skills for the job</legend>
+                            <div class="skill-grid">
+                                <label th:each="skill : ${skillList}" for="${skill}" class="label">
+                                    <input type="checkbox" th:field="*{highPrioritySkills}" th:value="${skill}" class="input" name="highPrioritySkills"> <span th:text="${skill}"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Select the Medium priority Skills for the job</legend>
+                            <div class="skill-grid">
+                                <label th:each="skill : ${skillList}" for="${skill}" class="label">
+                                    <input type="checkbox" th:field="*{mediumPrioritySkills}" th:value="${skill}" class="input" name="mediumPrioritySkills"> <span th:text="${skill}"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Select the Low priority Skills for the job</legend>
+                            <div class="skill-grid">
+                                <label th:each="skill : ${skillList}" for="${skill}" class="label">
+                                    <input type="checkbox" th:field="*{lowPrioritySkills}" th:value="${skill}" class="input" name="lowPrioritySkills"> <span th:text="${skill}"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+    <script>
+        let skillList = ["C++", "Java", "Web Development", "App Development", "React", "MongoDb", "Data-Structures"]
+        let l = ["primarySkills", "highPrioritySkills", "mediumPrioritySkills", "lowPrioritySkills"]
+        elements = document.getElementsByClassName('skill-grid')
+        for(let j = 0; j<elements.length; j++){
+            let list=""
+            for(let i = 0; i<skillList.length; i++){
+                let child = `<label for="${skillList[i]} class='label'"><input type="checkbox" class='input' id="${skillList[i]}" name="${l[j]}" value="${skillList[i]}">${skillList[i]}</label>`
+                list = list+child
+            }
+            elements[j].innerHTML = list
+        }
+        document.getElementById('create').addEventListener('click', ()=>{
+            document.getElementById('createJob').style.display = 'block'
+        })
+        document.querySelector('#view').addEventListener('click', ()=>{
+            document.getElementById('createJob').style.display = 'none'
+        })
+        document.addEventListener("DOMContentLoaded", function() {
+            var goBackLink = document.querySelector("a[data-username]");
+            var username = goBackLink.getAttribute("data-username");
+            var href = "/company/" + username+"/jobs";
+            goBackLink.setAttribute("href", href);
+        });
+    </script>
+</body>
+</html>

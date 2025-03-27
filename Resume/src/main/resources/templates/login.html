@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login | Resume-Selector</title>
+    <style>
+        *{
+            margin: 0;
+            padding : 0;
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            font-family: monospace;
+            font-weight: 600;
+            background-color:rgb(156, 154, 154);
+        }
+        header{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-content: center;
+            height: 120px;
+            width: 100vw;
+            padding: 20px 40px;
+            background-color: #18281d;
+            font-size: 1.5rem;
+        }
+        h1{
+            color:white;
+        }
+        a{
+            height: 50px;
+            width: 200px;
+            text-decoration: none;
+            text-align: center;
+            color: black;
+            padding: 10px;
+            border: 1px solid red;
+            background-color: whitesmoke;
+        }
+        a:hover{
+            background-color: black;
+            color:white;
+        }
+        #formContainer{
+            font-size: 1.5rem;
+            color: black;
+            width: 60vw;
+            margin: 50px auto;
+            background-color:white;
+            padding: 20px;
+        }
+        #formTitle{
+            width: 100%;
+            text-align: center;
+            color: black;
+            margin: 30px;
+        }
+        hr{
+            border: 5px solid black;
+            width: 80%;
+            margin: 20px auto 40px auto;
+        }
+        label{
+            display: block;
+            margin: 30px auto 20px 60px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        input{
+            padding: 10px;
+            font-size: 1.1rem;
+            width: 70%;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+        button{
+            width: 50%;
+            display: block;
+            padding: 10px;
+            font-size: 1.5rem;
+            color: whitesmoke;
+            background-color: #18281d;
+            margin: 40px auto 0px auto;
+            border: 3px solid black;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: black;
+            
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="heading">Resume-Selector</h1>
+        <a href="/">Go Back</a>
+    </header>
+    <main>
+        <div id="formContainer">
+            <form action="#" method="post" th:action="@{login/processLogin}" th:object="${loginModel}">
+                <h1 id="formTitle">Log-In</h1>
+                <hr>
+                <label for="username">Username: <input th:field="*{username}" type="text" name="username" id="username" placeholder="Enter your username here"></label>
+                <label for="password">Password: <input th:field="*{password}" type="text" name="password" id="password" placeholder="Enter your password here"></label>
+                <button id="buttonForSubmit">Submit</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
